@@ -1,11 +1,11 @@
-const http = require('http');
-fs = require('fs');
-url = require('url');
+const http = require('http'),
+  fs = require('fs'),
+  url = require('url');
 
 http.createServer((request, response) => {
   let addr = request.url;
-  q = url.parse(addr, true);
-  filePath = '';
+    q = url.parse(addr, true);
+    filePath = '';
   if (q.pathname.includes('documentation')) {
     filePath = (_dirname = '/documentation.html');
   } else {
