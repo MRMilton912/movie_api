@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+methodOverride = require('method-override');
 const app = express()
 
 let favMovies = [
@@ -17,6 +18,19 @@ let favMovies = [
     director: 'Stephen Spielberg'
   }
 ];
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+app.use(bodyParser.json());
+app.use(methodOverride());
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
 
 //Middleware 
 app.use(express.static('public')); // Location?
