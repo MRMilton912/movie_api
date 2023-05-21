@@ -4,6 +4,12 @@ const bodyParser = require('body-parser');
 methodOverride = require('method-override');
 const app = express()
 
+let users = [
+  {
+
+  }
+]
+
 let favMovies = [
   {
     title: 'Inception',
@@ -51,6 +57,7 @@ app.get('/movies', (req, res) => {
 
 
 // listen for requests
+
 app.listen(8080, () => {
   console.log('Your app is listening on port 8080.');
 });
