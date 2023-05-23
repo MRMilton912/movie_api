@@ -6,9 +6,23 @@ const app = express()
 
 let users = [
   {
+    id: 1,
+    name: 'Jessica',
+    favoriteMovie: []
+  },
 
+  {
+    id: 2,
+    name: 'Ben',
+    favoriteMovie: []
+  },
+  {
+    id: 3,
+    name: 'Lisa',
+    favoriteMovie: []
   }
-]
+];
+
 
 let favMovies = [
   {
@@ -53,6 +67,34 @@ app.get('/documentation', (req, res) => {
 
 app.get('/movies', (req, res) => {
   res.json(favMovies);
+});
+
+app.get('/users', (req, res) => {
+  res.send('Successful GET request returning data on all the users');
+});
+
+// Adds data for a new student to our list of users.
+app.post('/users', (req, res) => {
+  let newUser = req.body;
+
+  if (!newUser.name) {
+    const message = 'Missing name in request body';
+    res.status(400).send(message);
+  } else {
+    newUser.id = uuid.v4();
+    users.push(newUser);
+    res.status(201).send(newUser);
+  }
+});
+
+// Deletes a student from our list by ID
+app.delete('/users/:id', (req, res) => {
+  let student = users.find((student) => { return student.id === req.params.id });
+
+  if (student) {
+    users = users.filter((obj) => { return obj.id !== req.params.id });
+    res.status(201).send('Student ' + req.params.id + ' was deleted.');
+  }
 });
 
 
