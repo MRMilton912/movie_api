@@ -26,16 +26,37 @@ let users = [
 
 let favMovies = [
   {
-    title: 'Inception',
-    director: 'Christopher Nolan'
+    Title: 'Inception',
+    Description: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O., but his tragic past may doom the project and his team to disaster.',
+    Genre: {
+      Name: 'Adventure',
+    },
+    Director: {
+      Name: 'Christopher Nolan',
+      Bio: 'Chris bio'
+    },
   },
   {
-    title: 'The Departed',
-    director: 'Martain Scorcese'
+    Title: 'The Departed',
+    Description: 'An undercover cop and a mole in the police attempt to identify each other while infiltrating an Irish gang in South Boston.',
+    Genre: {
+      Name: 'Thriller',
+    },
+    Director: {
+      Name: 'Martin Scorcese ',
+      Bio: 'Martin bio'
+    },
   },
   {
-    title: 'Catch me if you can',
-    director: 'Stephen Spielberg'
+    Title: 'Catch me if you can',
+    Description: 'Barely 21 yet, Frank is a skilled forger who has passed as a doctor, lawyer and pilot. FBI agent Carl becomes obsessed with tracking down the con man, who only revels in the pursuit.',
+    Genre: {
+      Name: 'Drama',
+    },
+    Director: {
+      Name: 'Stephen Spielburg',
+      Bio: 'Steve bio'
+    },
   }
 ];
 
@@ -51,7 +72,6 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-
 //Middleware 
 app.use(express.static('public')); // Location?
 app.use(express.json());
@@ -62,18 +82,53 @@ app.get('/', (req, res) => {
 });
 
 app.get('/documentation', (req, res) => {                  
-  res.sendFile('public/documentation.html', { root: __dirname });
+  res.sendFile('public/documentation.html', { root: __dirname }); //server
 });
 
 app.get('/movies', (req, res) => {
-  res.json(favMovies);
+  res.status(200).json(favMovies);
 });
+
+//app get directors
+
+app.get('/movies/:title', (req, res) => {
+  const { title } = req.params;
+  const movie = favMovies.find ( movie => movie.Title === title);
+
+  if (movie) {
+    res.status(200).json(movie);
+  } else {
+    res.status(400).send('no such movie')
+  }
+}),
+
+app.get('/movies/genre/:genreName', (req, res) => {
+  const { genreName } = req.params;
+  const genre = favMovies.find ( movie => movie.Genre.Name === genreName).Genre;
+
+  if (genre) {
+    res.status(200).json(genre);
+  } else {
+    res.status(400).send('no such genre')
+  }
+}),
+
+app.get('/movies/director/:directorName', (req, res) => {
+  const { directorName } = req.params;
+  const director = favMovies.find ( movie => movie.Directorector.Name === directorName).Director;
+
+  if (director) {
+    res.status(200).json(director);
+  } else {
+    res.status(400).send('no such director')
+  }
+}),
 
 app.get('/users', (req, res) => {
   res.send('Successful GET request returning data on all the users');
 });
 
-// Adds data for a new student to our list of users.
+// Adds data for a new user to our list.
 app.post('/users', (req, res) => {
   let newUser = req.body;
 
@@ -87,7 +142,7 @@ app.post('/users', (req, res) => {
   }
 });
 
-// Deletes a student from our list by ID
+// Deletes a user from our list by ID
 app.delete('/users/:id', (req, res) => {
   let student = users.find((student) => { return student.id === req.params.id });
 
@@ -97,15 +152,7 @@ app.delete('/users/:id', (req, res) => {
   }
 });
 
-
 // listen for requests
-
 app.listen(8080, () => {
   console.log('Your app is listening on port 8080.');
 });
-
-app.get('/', function (req, res) {
-  res.send('Hello World')
-})
-
-app.listen(3000)

@@ -33,4 +33,12 @@ http.createServer((request, response) => {
   });
 
 }).listen(8080);
-console.log('My test server is running on Port 8080.');
+console.log('My test server is running on Port 8080.');URL:/
+GTimestamp:Wed May 31 2023 12:27:36 GMT-0400 (Eastern Daylight Time)
+
+URL:/favicon.ico
+GTimestamp:Wed May 31 2023 12:27:36 GMT-0400 (Eastern Daylight Time)
+
+URL:/movies/
+GTimestamp:Sat Jun 03 2023 12:28:47 GMT-0400 (Eastern Daylight Time)
+
