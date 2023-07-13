@@ -5,8 +5,8 @@ methodOverride = require('method-override');
 const app = express()
 const mongoose = require('mongoose');
 const Models = require('./models.js');
-const Movies = Models.Movie;
-const Users = Models.User;//Import
+const movies = Models.movie;//case sensative?
+const Users = Models.user;//Import
 
 mongoose.connect('mongodb://localhost:27017/FliXDB', { useNewUrlParser: true, useUnifiedTopology: true });
 //local host
@@ -45,11 +45,11 @@ app.get('/movies', (req, res) => {
   movies.find().then(movies => res.json(movies));
 });
 
-movies.find({ 'Genre.Name':'Thriller' }).then((movies) => {
-  // Logic here
+movies.find().then((movies) => {
+  // Logic here??
 });
 
-movies.find()
+app.get.movies.find({});//!??
 
 app.get('/movies/:title', (req, res) => {
   const { title } = req.params;
@@ -130,7 +130,7 @@ app.get('/users', (req, res) => {
     });
 });
 
-// Get a user by username
+// Get a user by username...name
 app.get('/users/:Username', (req, res) => {
   Users.findOne({ Username: req.params.Username }) // User
     .then((user) => {
