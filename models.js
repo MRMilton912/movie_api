@@ -21,11 +21,11 @@ let userSchema = mongoose.Schema({
   Password: {type: String, required: true},
   Email: {type: String, required: true},
   Birthday: Date,
-  FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
+  FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movies' }]//Data
 });
 
-let Movie = mongoose.model('Movie', movieSchema);
-let User = mongoose.model('User', userSchema);
+let Movies = mongoose.model('Movies', movieSchema, 'Movies');
+let Users = mongoose.model('Users', userSchema, 'Users');//Database
 
-module.exports.Movie = Movie;
-module.exports.User = User;//Export
+module.exports.Movies = Movies;
+module.exports.Users = Users;//Export
