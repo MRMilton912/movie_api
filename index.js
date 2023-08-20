@@ -117,8 +117,8 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
 });
 
 // Add a user
-app.post('/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  await Users.findOne({ name: req.body.Username }) //Username
+app.post('/users', (req, res) => {
+  Users.findOne({ name: req.body.Username })//auth?
     .then((user) => {
       if (user) {
         return res.status(400).send(req.body.Username + 'already exists');
