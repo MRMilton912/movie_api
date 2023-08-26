@@ -116,3 +116,24 @@ app.post('/users', passport.authenticate('jwt', { session: false }), async (req,
       res.status(500).send('Error: ' + error);
     });
 });
+
+// Update a user's info by username
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const hashPassword = Users.hashPassword(req.body.Password)
+  await Users.findOneAndUpdate({ Username: req.params.Username }, {
+    $set:
+    {
+      Username: req.body.Username,
+      Password: hashPassword,
+      Email: req.body.Email,
+      Birthday: req.body.Birthday
+    }
+  },
+    { new: true }, // This line makes sure that the updated document is returned
+  ).then(updatedUser => {
+    res.json(updatedUser);
+  }).catch(error => {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  })
+});

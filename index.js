@@ -123,10 +123,11 @@ app.post('/users', (req, res) => {
       if (user) {
         return res.status(400).send(req.body.Username + 'already exists');
       } else {
+        const hashPassword = Users.hashPassword(req.body.Password)
         Users
           .create({
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
@@ -145,11 +146,12 @@ app.post('/users', (req, res) => {
 
 // Update a user's info by username
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const hashPassword = Users.hashPassword(req.body.Password)
   await Users.findOneAndUpdate({ Username: req.params.Username }, {
     $set:
     {
       Username: req.body.Username,
-      Password: req.body.Password,
+      Password: hashPassword,
       Email: req.body.Email,
       Birthday: req.body.Birthday
     }
