@@ -20,6 +20,9 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(morgan())
 
+const cors = require('cors');
+app.use(cors());
+
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
@@ -146,15 +149,20 @@ app.post('/users', (req, res) => {
 
 // Update a user's info by username
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  const hashPassword = Users.hashPassword(req.body.Password)
+  const userToUpdate = {}
+  if (req.body.Pasword) {
+    const hashPassword = Users.hashPassword(req.body.Password)
+    userToUpdate.Password = hashPassword
+  }
+  if (req.body.Email) {
+    userToUpdate.Email = req.body.Email
+  }
+  if (req.body.Birthday) {
+    userToUpdate.Birthday = req.body.Birthday
+  }
+
   await Users.findOneAndUpdate({ Username: req.params.Username }, {
-    $set:
-    {
-      Username: req.body.Username,
-      Password: hashPassword,
-      Email: req.body.Email,
-      Birthday: req.body.Birthday
-    }
+    $set: userToUpdate
   },
     { new: true }, // This line makes sure that the updated document is returned
   ).then(updatedUser => {
